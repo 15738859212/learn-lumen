@@ -1,6 +1,6 @@
 ### Lumen框架简介
 
-> Lumen是一个基于Laravel组件构建的“微框架”。它去掉了Laravel所提供的很多配置和定制选项，有着更快的执行速度。Lumen的设计目的是为了构建超级快速的微服务（micro-services）和API服务的,它包含很多强大的功能特性：
+ Lumen是一个基于Laravel组件构建的“微框架”。它去掉了Laravel所提供的很多配置和定制选项，有着更快的执行速度。Lumen的设计目的是为了构建超级快速的微服务（micro-services）和API服务的,它包含很多强大的功能特性：
 + 依赖注入
 + Eloquent ORM
 + 数据库抽象
