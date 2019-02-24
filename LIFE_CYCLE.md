@@ -10,6 +10,7 @@
   ```
     $app = require __DIR__.'/../bootstrap/app.php';
   ```
+  
 2.接下来程序加载执行 bootstrap/app.php ,这个过程完成了框架初始化的所有工作:
   + 手动加载类自动载入文件：
 
