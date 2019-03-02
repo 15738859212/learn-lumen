@@ -1,0 +1,541 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>加载环境变量 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="APP_OBJECT.html" />
+    
+    
+    <link rel="prev" href="SINGLE_ENTRANCE.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Lumen框架简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="LIFE_CYCLE.html">
+            
+                <a href="LIFE_CYCLE.html">
+            
+                    
+                    请求生命周期
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="SINGLE_ENTRANCE.html">
+            
+                <a href="SINGLE_ENTRANCE.html">
+            
+                    
+                    实现单一入口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="LOAD_ENV.html">
+            
+                <a href="LOAD_ENV.html">
+            
+                    
+                    加载环境变量
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="APP_OBJECT.html">
+            
+                <a href="APP_OBJECT.html">
+            
+                    
+                    $app对象简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="part_designs/RAEDME.md">
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="part_designs/SINGLETON.html">
+            
+                <a href="part_designs/SINGLETON.html">
+            
+                    
+                    单例模式
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >加载环境变量</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h3 id="&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;">&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</h3>
+<p>&#x5B9E;&#x73B0;&#x7C7B;&#x81EA;&#x52A8;&#x8F7D;&#x5165;&#x548C;&#x5355;&#x4E00;&#x5165;&#x53E3;&#x529F;&#x80FD;&#x4E4B;&#x540E;,Lumen&#x6846;&#x67B6;&#x4FBF;&#x5F00;&#x59CB;&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF;,&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#x4F1A;&#x52A0;&#x8F7D;&#x9879;&#x76EE;&#x6839;&#x76EE;&#x5F55;&#x4E0B;.env&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x76F8;&#x5173;&#x914D;&#x7F6E;,&#x5B9E;&#x9645;&#x7684;&#x9879;&#x76EE;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;,&#x5F00;&#x53D1;&#x4EBA;&#x5458;&#x4F1A;&#x6839;&#x636E;&#x9879;&#x76EE;&#x7684;&#x5E94;&#x7528;&#x573A;&#x666F;&#x5206;&#x522B;&#x914D;&#x7F6E;&#x672C;&#x5730;&#x3001;&#x6D4B;&#x8BD5;&#x548C;&#x7EBF;&#x4E0A;&#x73AF;&#x5883;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x3002;&#x672C;&#x8282;&#x5B66;&#x4E60;Lumen&#x6846;&#x67B6;&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x7684;&#x8FC7;&#x7A0B;&#x3002;&#x6E90;&#x7801;&#x4ECE; bootstrap/app.php &#x4E2D;&#x5F00;&#x59CB;&#xFF1A;</p>
+<pre><code>    try {
+        (new Dotenv\Dotenv(dirname(__DIR__)))-&gt;load();
+    } catch (Dotenv\Exception\InvalidPathException $e) {
+        //
+    }
+</code></pre><p>&#x4EE3;&#x7801;&#x533F;&#x540D;&#x5B9E;&#x4F8B;&#x5316;&#x4E86;Dotenv\Dotenv()&#x7C7B;,&#x5E76;&#x8C03;&#x7528;&#x5176;load&#x65B9;&#x6CD5;&#x3002;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x5B9E;&#x4F8B;&#x5316;Dotenv\Dotenv()&#x65F6;&#x7A0B;&#x5E8F;&#x505A;&#x4E86;&#x54EA;&#x4E9B;&#x5DE5;&#x4F5C;:</p>
+<pre><code>    protected $loader;
+
+    ......
+
+    public function __construct($path, $file = &apos;.env&apos;)
+    {
+        $this-&gt;filePath = $this-&gt;getFilePath($path, $file);
+        $this-&gt;loader = new Loader($this-&gt;filePath, true);
+    }
+</code></pre><p>&#x7A0B;&#x5E8F;&#x505A;&#x4E86;&#x4E24;&#x4EF6;&#x4E8B;&#x60C5;:</p>
+<ul>
+<li>&#x6839;&#x636E;&#x4F20;&#x9012;&#x53C2;&#x6570;&#x8BBE;&#x7F6E;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;</li>
+<li>&#x4F9D;&#x8D56;&#x6CE8;&#x5165;Loader&#x7C7B;</li>
+</ul>
+<p>&#x5728;&#x6784;&#x9020;&#x51FD;&#x6570;&#x4E2D;&#x624B;&#x52A8;&#x5B9E;&#x4F8B;&#x5316;&#x7C7B;,&#x5E76;&#x5C06;&#x5176;&#x8D4B;&#x503C;&#x7ED9;&#x81EA;&#x8EAB;&#x53D7;&#x4FDD;&#x62A4;&#x7684;&#x6210;&#x5458;&#x53D8;&#x91CF;&#x662F;&#x89E3;&#x51B3;&#x201C;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x201D;&#x7684;&#x4E00;&#x79CD;&#x65B9;&#x5F0F;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x79CD;&#x5B9E;&#x73B0;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x7684;&#x65B9;&#x6CD5;&#x53EA;&#x9002;&#x7528;&#x7B80;&#x5355;&#x7684;&#x903B;&#x8F91;&#x5904;&#x7406;&#xFF0C;&#x540E;&#x8FB9;&#x6211;&#x4EEC;&#x4F1A;&#x8BB2;&#x5230;Lumen&#x4E2D;&#x4F7F;&#x7528;&#x670D;&#x52A1;&#x5BB9;&#x5668;&#x81EA;&#x52A8;&#x5B9E;&#x73B0;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x7684;&#x5F3A;&#x5927;&#x529F;&#x80FD;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x63A5;&#x7740;&#x5206;&#x6790;Dotenv\Dotenv()&#x7C7B;&#x7684;load&#x65B9;&#x6CD5;:</p>
+<pre><code>    public function load()
+    {
+        return $this-&gt;loadData();
+    }
+</code></pre><p>&#x7EE7;&#x7EED;&#x5206;&#x6790;Dotenv\Dotenv()&#x7C7B;&#x7684;loadData()&#x65B9;&#x6CD5;:</p>
+<pre><code>    protected function loadData($overload = false)
+    {
+        return $this-&gt;loader-&gt;setImmutable(!$overload)-&gt;load();
+    }
+</code></pre><p>loadData&#x65B9;&#x6CD5;&#x4F7F;&#x7528;loader&#x6210;&#x5458;&#x53D8;&#x91CF;(Loader&#x5BF9;&#x8C61;)&#x8C03;&#x7528;Loader&#x7C7B;&#x4E2D;&#x7684;setImmutable&#x65B9;&#x6CD5;&#x548C;load&#x65B9;&#x6CD5;&#x3002;$overload&#x9ED8;&#x8BA4;&#x4E3A;false,&#x53D6;&#x53CD;&#x4E4B;&#x540E;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;&#x4F20;&#x5165;setImmutable()&#x65B9;&#x6CD5;&#x4E2D;&#x3002;&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x8FFD;&#x8E2A;&#x67E5;&#x770B;setImmutable()&#x65B9;&#x6CD5;:</p>
+<pre><code>    protected $immutable;
+
+    public function __construct($filePath, $immutable = false)
+    {
+        $this-&gt;filePath = $filePath;
+        $this-&gt;immutable = $immutable;
+    }
+
+    ......
+
+    public function setImmutable($immutable = false)
+    {
+        $this-&gt;immutable = $immutable;
+
+        return $this;
+    }
+</code></pre><p>Loader&#x7C7B;&#x521D;&#x59CB;&#x5316;&#x65F6;&#x9ED8;&#x8BA4;&#x8D4B;&#x503C;&#x81EA;&#x8EAB;&#x53D7;&#x4FDD;&#x62A4;&#x7684;&#x6210;&#x5458;&#x53D8;&#x91CF;$immutable&#x4E3A;false,&#x901A;&#x8FC7;&#x81EA;&#x8EAB;&#x5F00;&#x653E;&#x6210;&#x5458;&#x65B9;&#x6CD5;setImmutable()&#x65B9;&#x6CD5;&#x4FEE;&#x6539;&#x8BBE;&#x7F6E;&#x5176;&#x503C;&#x3002;&#x8FD9;&#x79CD;&#x7C7B;&#x5E93;&#x6A21;&#x5F0F;&#x7684;&#x8BBE;&#x8BA1;&#x7B26;&#x5408;&#x201C;&#x6700;&#x5C0F;&#x5F00;&#x653E;&#x539F;&#x5219;&#x201D;,&#x9632;&#x6B62;&#x4E86;&#x81EA;&#x8EAB;&#x53D7;&#x4FDD;&#x62A4;&#x6210;&#x5458;&#x53D8;&#x91CF;&#x88AB;&#x65E0;&#x610F;&#x7BE1;&#x6539;&#x3002;&#x7ED3;&#x5408;&#x4E0A;&#x4E0B;&#x6587;&#x5F97;&#x77E5;: $immutable&#x8868;&#x793A;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x662F;&#x5426;&#x88AB;&#x52A0;&#x8F7D;&#x8FC7;,&#x4FDD;&#x8BC1;&#x4E86;&#x6BCF;&#x6B21;&#x8BF7;&#x6C42;&#x751F;&#x547D;&#x5468;&#x671F;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x53EA;&#x4F1A;&#x88AB;&#x52A0;&#x8F7D;&#x4E00;&#x6B21;&#x3002;setImmutable&#x65B9;&#x6CD5;&#x8FD4;&#x56DE;$this&#xFF08;&#x5F53;&#x524D;&#x5BF9;&#x8C61;&#xFF09;,&#x8FD9;&#x662F;&#x5B9E;&#x73B0;&#x94FE;&#x5F0F;&#x8C03;&#x7528;&#x7684;&#x7075;&#x9B42;&#x6240;&#x5728;&#x3002;&#x6211;&#x4EEC;&#x7EE7;&#x7EED;&#x8FFD;&#x8E2A;&#x7A0B;&#x5E8F;&#x7D27;&#x63A5;&#x7740;&#x8C03;&#x7528;&#x7684;load&#x65B9;&#x6CD5;:</p>
+<pre><code>    public function load()
+    {
+        $this-&gt;ensureFileIsReadable();
+
+        $filePath = $this-&gt;filePath;
+        $lines = $this-&gt;readLinesFromFile($filePath);
+        foreach ($lines as $line) {
+            if (!$this-&gt;isComment($line) &amp;&amp; $this-&gt;looksLikeSetter($line)) {
+                $this-&gt;setEnvironmentVariable($line);
+            }
+        }
+        return $lines;
+    }
+</code></pre><p>load&#x65B9;&#x6CD5;&#x9996;&#x5148;&#x8C03;&#x7528;ensureFileIsReadable&#x65B9;&#x6CD5;&#x5224;&#x65AD;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x6587;&#x4EF6;&#x662F;&#x5426;&#x5408;&#x6CD5;(&#x6587;&#x4EF6;&#x5B58;&#x5728;&#x5E76;&#x53EF;&#x8BFB;):</p>
+<pre><code>    protected function ensureFileIsReadable()
+    {
+        if (!is_readable($this-&gt;filePath) || !is_file($this-&gt;filePath)) {
+            throw new InvalidPathException(sprintf(&apos;Unable to read the environment file at %s.&apos;, $this-&gt;filePath));
+        }
+    }
+</code></pre><p>&#x7136;&#x540E;&#x8C03;&#x7528;readLinesFromFile&#x65B9;&#x6CD5;&#x5C06;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x9010;&#x884C;&#x8BFB;&#x5165;&#x6570;&#x7EC4;$line:</p>
+<pre><code>    protected function readLinesFromFile($filePath)
+    {
+        // Read file into an array of lines with auto-detected line endings
+        $autodetect = ini_get(&apos;auto_detect_line_endings&apos;);
+        ini_set(&apos;auto_detect_line_endings&apos;, &apos;1&apos;);
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        ini_set(&apos;auto_detect_line_endings&apos;, $autodetect);
+
+        return $lines;
+    }
+</code></pre><p>php&#x7684;&#x5185;&#x7F6E;&#x51FD;&#x6570;file&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570; FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES &#x8868;&#x793A;&#x5FFD;&#x7565;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x7A7A;&#x884C;&#x548C;&#x6587;&#x4EF6;&#x7ED3;&#x675F;&#x7B26;EOF&#x3002;&#x7D27;&#x63A5;&#x7740;&#x7A0B;&#x5E8F;&#x5FAA;&#x73AF;&#x904D;&#x5386;&#x5904;&#x7406;$lines&#x6570;&#x7EC4;&#x4E2D;&#x7684;&#x539F;&#x59CB;&#x6570;&#x636E;,&#x7A0B;&#x5E8F;&#x9996;&#x5148;&#x8FC7;&#x6EE4;&#x6389;&#x4E86;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x4E2D;&#x7684;&#x6CE8;&#x91CA;&#x90E8;&#x5206;&#x548C;&#x4E0D;&#x5408;&#x6CD5;&#x7684;&#x884C;:</p>
+<pre><code>  ......
+
+    protected function isComment($line)
+    {
+        $line = ltrim($line);
+
+        return isset($line[0]) &amp;&amp; $line[0] === &apos;#&apos;;
+    }
+
+  ......
+
+    protected function looksLikeSetter($line)
+    {
+        return strpos($line, &apos;=&apos;) !== false;
+    }
+
+  ......
+</code></pre><p>&#x4E4B;&#x540E;&#x8C03;&#x7528;setEnvironmentVariable&#x65B9;&#x6CD5;&#x8FDB;&#x4E00;&#x6B65;&#x8FC7;&#x6EE4;&#x3001;&#x89E3;&#x6790;&#x6570;&#x636E;:</p>
+<pre><code>    public function setEnvironmentVariable($name, $value = null)
+    {
+        list($name, $value) = $this-&gt;normaliseEnvironmentVariable($name, $value);
+
+        $this-&gt;variableNames[] = $name;
+
+        // Don&apos;t overwrite existing environment variables if we&apos;re immutable
+        // Ruby&apos;s dotenv does this with `ENV[key] ||= value`.
+        if ($this-&gt;immutable &amp;&amp; $this-&gt;getEnvironmentVariable($name) !== null) {
+            return;
+        }
+
+        // If PHP is running as an Apache module and an existing
+        // Apache environment variable exists, overwrite it
+        if (function_exists(&apos;apache_getenv&apos;) &amp;&amp; function_exists(&apos;apache_setenv&apos;) &amp;&amp; apache_getenv($name) !== false) {
+            apache_setenv($name, $value);
+        }
+
+        if (function_exists(&apos;putenv&apos;)) {
+            putenv(&quot;$name=$value&quot;);
+        }
+
+        $_ENV[$name] = $value;
+        $_SERVER[$name] = $value;
+    }
+</code></pre><p>setEnvironmentVariable&#x65B9;&#x6CD5;&#x505A;&#x4E86;&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x5230;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x7684;&#x6700;&#x540E;&#x5DE5;&#x4F5C;,&#x51FD;&#x6570;&#x9996;&#x5148;&#x8C03;&#x7528;normaliseEnvironmentVariable&#x65B9;&#x6CD5;&#x89C4;&#x8303;&#x5316;&#x6574;&#x7406;&#x6570;&#x636E;&#xFF08;&#x89E3;&#x6790;&#x6210;KV&#x952E;&#x503C;&#x5BF9;&#xFF09;&#x3002;&#x8FFD;&#x52A0;&#x5230;variableNames&#x6570;&#x7EC4;&#x4E2D;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x6570;&#x636E;&#x5206;&#x522B;&#x5199;&#x5165;&#x5230;&#x5168;&#x5C40;&#x53D8;&#x91CF;$_ENV&#x548C; $_SERVER&#x4E2D;&#x53BB;,&#x5728;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8FD9;&#x8FD9;&#x4E24;&#x4E2A;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x53D6;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x76F8;&#x5173;&#x6570;&#x636E;&#x3002;&#x6211;&#x4EEC;&#x518D;&#x6765;&#x7EC6;&#x770B;normaliseEnvironmentVariable&#x65B9;&#x6CD5;&#x7684;&#x5B9E;&#x73B0;:</p>
+<pre><code>    protected function normaliseEnvironmentVariable($name, $value)
+    {
+        list($name, $value) = $this-&gt;processFilters($name, $value);
+
+        $value = $this-&gt;resolveNestedVariables($value);
+
+        return array($name, $value);
+    }
+</code></pre><p>&#x4EE3;&#x7801;&#x4E3B;&#x8981;&#x505A;&#x4E86;&#x4E24;&#x4EF6;&#x4E8B;:&#x9996;&#x5148;&#x8C03;&#x7528;processFilters&#x65B9;&#x6CD5;&#x8FC7;&#x6EE4;&#x6574;&#x7406;&#x6570;&#x636E;,&#x7136;&#x540E;&#x8C03;&#x7528;resolveNestedVariables&#x89E3;&#x6790;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x5D4C;&#x5957;&#x53D8;&#x91CF;&#x7684;&#x66FF;&#x6362;&#x3002;&#x524D;&#x8005;&#x4EE3;&#x7801;&#x6BD4;&#x8F83;&#x7B80;&#x5355;,&#x6211;&#x4EEC;&#x5C31;&#x4E0D;&#x518D;&#x5206;&#x6790;&#x4E86;,&#x4E3B;&#x8981;&#x6765;&#x770B;&#x540E;&#x8005;&#x7684;&#x5B9E;&#x73B0;:</p>
+<pre><code>    protected function resolveNestedVariables($value)
+    {
+        if (strpos($value, &apos;$&apos;) !== false) {
+            $loader = $this;
+            $value = preg_replace_callback(
+                &apos;/\${([a-zA-Z0-9_.]+)}/&apos;,
+                function ($matchedPatterns) use ($loader) {
+                    $nestedVariable = $loader-&gt;getEnvironmentVariable($matchedPatterns[1]);
+                    if ($nestedVariable === null) {
+                        return $matchedPatterns[0];
+                    } else {
+                        return $nestedVariable;
+                    }
+                },
+                $value
+            );
+        }
+
+        return $value;
+    }
+</code></pre><p>&#x4EE3;&#x7801;&#x9996;&#x5148;&#x5224;&#x65AD;&#x6570;&#x636E;&#x4E2D;&#x662F;&#x5426;&#x5B58;&#x5728;$&#x7B26;&#x53F7;&#x5224;&#x65AD;&#x662F;&#x5426;&#x6709;&#x53EF;&#x89E3;&#x6790;&#x7684;&#x53D8;&#x91CF;,&#x7136;&#x540E;&#x8C03;&#x7528;&#x5185;&#x7F6E;&#x51FD;&#x6570;preg<em>replace_callback&#x5BF9;&#x53EF;&#x89E3;&#x6790;&#x53D8;&#x91CF;&#x8FDB;&#x884C;&#x66FF;&#x6362;&#xFF0C;&#x66FF;&#x6362;&#x89C4;&#x5219;/${([a-zA-Z0-9</em>.]+)}/ &#x8868;&#x793A;&#x662F;&#x67E5;&#x627E;&#x7C7B;&#x4F3C;${...}&#x7684;&#x5B57;&#x7B26;&#x4E32;,&#x7136;&#x540E;&#x5C06;&#x5339;&#x914D;&#x5230;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x89E3;&#x6790;&#x66FF;&#x6362;&#x4E3A;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4E2D;&#x5339;&#x914D;&#x7684;&#x503C;&#x3002;&#x4EE3;&#x7801;:</p>
+<pre><code>function ($matchedPatterns) use ($loader) {
+                   ......
+}
+</code></pre><p>&#x662F;&#x95ED;&#x5305;&#x7684;&#x5B9E;&#x73B0;,&#x5728;&#x51FD;&#x6570;&#x5185;&#x90E8;&#x53EF;&#x4EE5;&#x8C03;&#x7528;$loader&#x8FD9;&#x4E2A;&#x5916;&#x90E8;&#x53D8;&#x91CF;,$matchedPatterns&#x662F;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x5339;&#x914D;&#x5230;&#x7684;&#x6570;&#x7EC4;,&#x5176;&#x4E2D;$matchedPatterns[1]&#x8868;&#x793A;&#x5B50;&#x5339;&#x914D;([a-zA-Z0-9_.]+)&#x7684;&#x7ED3;&#x679C;&#x3002;getEnvironmentVariable&#x65B9;&#x6CD5;&#x662F;&#x4ECE;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4E2D;&#x67E5;&#x627E;&#x6307;&#x5B9A;&#x7684;&#x503C;:</p>
+<pre><code>    public function getEnvironmentVariable($name)
+    {
+        switch (true) {
+            case array_key_exists($name, $_ENV):
+                return $_ENV[$name];
+            case array_key_exists($name, $_SERVER):
+                return $_SERVER[$name];
+            default:
+                $value = getenv($name);
+                return $value === false ? null : $value; // switch getenv default to null
+        }
+    }
+</code></pre><p>&#x4EE5;&#x4E0A;&#x7B80;&#x5355;&#x7684;&#x4EE3;&#x7801;&#x5C31;&#x5B9E;&#x73B0;&#x4E86;&#x89E3;&#x6790;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x5D4C;&#x5957;&#x53D8;&#x91CF;&#x7684;&#x5F3A;&#x5927;&#x529F;&#x80FD;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x6765;&#x7B80;&#x5355;&#x914D;&#x7F6E;&#x4E00;&#x4E0B;&#x672C;&#x5730;&#x7684;.env&#x6587;&#x4EF6;</p>
+<pre><code>APP_NAME=Lumen
+APP_ENV=local
+APP_NAME_ENV=Laravel${APP_NAME}
+APP_KEY=4fff29bf2144a5ade1f177b3cb0fa94f
+APP_DEBUG=true
+APP_URL=http://localhost
+APP_TIMEZONE=UTC
+
+LOG_CHANNEL=stack
+LOG_SLACK_WEBHOOK_URL=
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+</code></pre><p>&#x7136;&#x540E;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x4E4B;&#x540E;&#x6253;&#x5370;&#x4E00;&#x4E0B;$_ENV&#x7684;&#x5185;&#x5BB9;,&#x6211;&#x4EEC;&#x5C31;&#x5F97;&#x5230;&#x52A0;&#x8F7D;&#x5230;&#x7A0B;&#x5E8F;&#x5168;&#x5C40;&#x53D8;&#x91CF;&#x4E2D;&#x7684;&#x5185;&#x5BB9;:</p>
+<pre><code>array:17 [&#x25BC;
+  &quot;APP_NAME&quot; =&gt; &quot;Lumen&quot;
+  &quot;APP_ENV&quot; =&gt; &quot;local&quot;
+  &quot;APP_NAME_ENV&quot; =&gt; &quot;LaravelLumen&quot;
+  &quot;APP_KEY&quot; =&gt; &quot;4fff29bf2144a5ade1f177b3cb0fa94f&quot;
+  &quot;APP_DEBUG&quot; =&gt; &quot;true&quot;
+  &quot;APP_URL&quot; =&gt; &quot;http://localhost&quot;
+  &quot;APP_TIMEZONE&quot; =&gt; &quot;UTC&quot;
+  &quot;LOG_CHANNEL&quot; =&gt; &quot;stack&quot;
+  &quot;LOG_SLACK_WEBHOOK_URL&quot; =&gt; &quot;&quot;
+  &quot;DB_CONNECTION&quot; =&gt; &quot;mysql&quot;
+  &quot;DB_HOST&quot; =&gt; &quot;127.0.0.1&quot;
+  &quot;DB_PORT&quot; =&gt; &quot;3306&quot;
+  &quot;DB_DATABASE&quot; =&gt; &quot;homestead&quot;
+  &quot;DB_USERNAME&quot; =&gt; &quot;homestead&quot;
+  &quot;DB_PASSWORD&quot; =&gt; &quot;secret&quot;
+  &quot;CACHE_DRIVER&quot; =&gt; &quot;file&quot;
+  &quot;QUEUE_CONNECTION&quot; =&gt; &quot;sync&quot;
+]
+</code></pre><p>
+&#x603B;&#x7ED3;&#xFF1A;</p>
+<ul>
+<li>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x4E2D;&#x5B9E;&#x4F8B;&#x5316;&#x4F9D;&#x8D56;&#x7684;&#x7C7B;&#x6765;&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#x3002;</li>
+<li>&#x7C7B;&#x7684;&#x8BBE;&#x8BA1;&#x8981;&#x7B26;&#x5408;&#x201C;&#x6700;&#x5C0F;&#x5F00;&#x653E;&#x539F;&#x5219;&#x201D;,&#x8981;&#x7EFC;&#x5408;&#x8003;&#x91CF;&#x54EA;&#x4E9B;&#x53D8;&#x91CF;&#x3001;&#x54EA;&#x4E9B;&#x65B9;&#x6CD5;&#x5E94;&#x8BE5;&#x5F00;&#x653E;&#x7ED9;&#x7528;&#x6237;&#x4F7F;&#x7528;,&#x54EA;&#x4E9B;&#x53D8;&#x91CF;&#x548C;&#x65B9;&#x6CD5;&#x53C8;&#x662F;&#x907F;&#x514D;&#x7528;&#x6237;&#x4FEE;&#x6539;&#x548C;&#x8C03;&#x7528;&#x7684;&#x3002;</li>
+<li>&#x5B9E;&#x73B0;&#x94FE;&#x5F0F;&#x8C03;&#x7528;&#x7684;&#x6838;&#x5FC3;&#x662F;&#x8FD4;&#x56DE;&#x5F53;&#x524D;&#x5BF9;&#x8C61;&#x3002;</li>
+<li>&#x95ED;&#x5305;&#x5728;&#x7A0B;&#x5E8F;&#x4E2D;&#x5B9E;&#x73B0;&#x7279;&#x5B9A;&#x7684;&#x529F;&#x80FD;&#x65F6;&#x975E;&#x5E38;&#x7684;&#x5B9E;&#x7528;,&#x53EF;&#x4EE5;&#x901A;&#x8FC7;use&#x5173;&#x952E;&#x5B57;&#x5F15;&#x7528;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x3002;</li>
+<li>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x5728;&#x89E3;&#x6790;&#x5B57;&#x7B26;&#x4E32;&#x65F6;&#x7684;&#x975E;&#x5E38;&#x7684;&#x5F3A;&#x5927;&#x3002;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="SINGLE_ENTRANCE.html" class="navigation navigation-prev " aria-label="Previous page: 实现单一入口">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="APP_OBJECT.html" class="navigation navigation-next " aria-label="Next page: $app对象简介">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"加载环境变量","level":"1.4","depth":1,"next":{"title":"$app对象简介","level":"1.5","depth":1,"path":"APP_OBJECT.md","ref":"APP_OBJECT.md","articles":[]},"previous":{"title":"实现单一入口","level":"1.3","depth":1,"path":"SINGLE_ENTRANCE.md","ref":"SINGLE_ENTRANCE.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"LOAD_ENV.md","mtime":"2019-02-28T16:08:20.640Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-02T13:01:44.721Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
