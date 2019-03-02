@@ -6,6 +6,6 @@
 * [加载环境变量](LOAD_ENV.md)
 * [$app对象简介](APP_OBJECT.md)
 * [设计模式](./DESIGN_PATTERNS/RAEDME.md)
-    * [单例模式](./DESIGN_PATTERNS/SINGLETON_PATTERN.md)
+    * [单例模式](./DESIGN_PATTERNS/SINGLETON.md)
 
 
