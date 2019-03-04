@@ -9,4 +9,5 @@
 * [设计模式](part_designs/INDEX.md)
     * [单例模式](part_designs/SINGLETON.md)
     * [工厂模式](part_designs/FACTORY.md)
+    * [外观模式](part_designs/FACADES.md)
 
