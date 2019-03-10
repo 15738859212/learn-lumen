@@ -71,7 +71,7 @@ app(App\Service\ExampleService::class);
 
 ```
 app[App\Service\ExampleService::class];
-```
+```
 
 ArrayAccess(数组式访问)接口非常有用，提供了像访问数组一样访问对象的能力的接口。
 
