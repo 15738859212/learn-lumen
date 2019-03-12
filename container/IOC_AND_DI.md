@@ -2,7 +2,7 @@
 
 **控制反转**是框架设计的一种原则，在很大程度上降低了代码模块之间的耦合度，有利于框架维护和拓展。实现控制反转最常见的方法是“依赖注入”，还有一种方法叫“依赖查找”。控制反转将框架中解决依赖的逻辑从实现代码类库的内部提取到了外部来管理实现。
 
-我们用简单代码模拟一下Lumen处理用户请求的逻辑，框架中要使用到最简单的Request请求模块、Response请求模块,我们就使用单例模式简单实现一下:
+我们用简单代码模拟一下Lumen处理用户请求的逻辑，框架中要使用到最简单的Request请求模块、Response请求模块,我们使用单例模式简单实现一下:
 
 ```
 //Request模块实现
@@ -301,7 +301,7 @@ Closure是php中的匿名函数类类型。$abstract和$concrete可以抽象理
     }
 ```
 
-getCloure是根据用户传入的参数来决定调用系统的build和make方法。其中build方法就是构建匿名函数的关键实现，使用了php中的反射机制，解析生成匿名类:
+getClosure是根据用户传入的参数来决定调用系统的build和make方法。其中build方法就是构建匿名函数和类实例的关键实现，使用了php中的反射机制，解析出类实例:
 
 ```
 //实例化一个对象
@@ -325,4 +325,127 @@ getCloure是根据用户传入的参数来决定调用系统的build和make方�
     }
 ```
 
-build首先判断参数类是否能够实例化，如果能够的话就判断类的构造函数中是否需要参数，不需要就直接new $concrete生成一个匿名类，需要的话就获取这些参数，然后调用getParameters
+build首先判断参数$concrete是一个匿名函数，就返回调用匿名函数的一个闭包。否则$concrete是一个类,利用反射机制解析类的信息,首先判断类是否能够被实例化(例如单例就不能被实例化，容器中的单例是通过属性$shared来区分的);确保了类能够被实例化以后,使用getConstructor()判断类是否定义了构造函数，如果没有定义构造函数，直接实例化得到一个类的实例。否则就再次调用getParameters获取构造函数中都传入了哪些参数(也就是判断$concrete类都有哪些依赖)，getDependencies方法就是来生成$concrete依赖的函数:
+
+``` 
+    //通过反射机制实例化对象时的依赖
+    protected function getDependencies($parameters)
+    {
+        $dependencies = [];
+        foreach($parameters as $parameter)
+        {
+            $dependency = $parameter->getClass();
+            if(is_null($dependency)) {
+                $dependencies[] = NULL;
+            } else {
+                $dependencies[] = $this->resolveClass($parameter);
+            }
+        }
+
+        return (array) $dependencies;
+    }
+```
+
+得到了类依赖的实例以后，就调用newInstanceArgs($instances)来生成类的实例。
+
+服务解析函数make主要由build函数实现：
+
+```
+    //生成实例对象，首先解决接口和要实例化类之间的依赖关系
+    public function make($abstract)
+    {
+        $concrete = $this->getConcrete($abstract);
+        if ($this->isBuildable($concrete, $abstract)) {
+            $object = $this->build($this->build($concrete));
+        } else {
+            $object = $this->make($concrete);
+        }
+
+        return $object;
+    }
+```
+
+有了服务容器以后,我们就可以使用服务容器来存储处理请求中需要的服务，并实现服务中的依赖自动注入。不过首先我们需要将Request、Response单例做修改，因为服务容器对单例的管理，是通过$shared属性进行设置的。所以Request、Response要能够被实例化，才能保存到容器的$bindings数组中:
+
+```
+class Request
+{
+
+    public function __construct()
+    {
+    }
+
+    public function get($key)
+    {
+        return $_GET[$key] ? $_GET[$key] : '';
+    }
+
+    public function post($key)
+    {
+        return $_POST[$key] ? $_POST[$key] : '';
+    }
+}
+
+class Response
+{
+    public function __construct()
+    {
+    }
+
+    public function json($data)
+    {
+        return json_encode($data);
+    }
+}
+```
+
+我们再来看使用容器后处理用户请求的源代码:
+
+```
+include_once 'Container.php';
+include_once 'Request.php';
+include_once 'Response.php';
+include_once 'ExceptionHandler.php';
+
+$app = new Container();
+//绑定错误处理
+$app->bind('exception', 'ExceptionHandler');
+//将请求、响应单例组件添加到容器中
+$app->singleton('request', 'Request');
+$app->singleton('response', 'Response');
+//解析错误处理
+$app->make('exception');
+
+//用户逻辑
+class UserLogic
+{
+    public $app = null;
+
+    public function __construct(Container $app)
+    {
+        $this->app = $app;
+    }
+
+    public function getUserList()
+    {
+        if ($this->app->make('request')->get('path') == 'userlist') {
+            $userList = [
+                ['name' => '张三', 'age' => 18],
+                ['name' => '李四', 'age' => 22]
+            ];
+
+            return $this->app->make('response')->json($userList);
+        }
+    }
+}
+
+try {
+    $userLogic = new UserLogic($app);
+    echo $userLogic->getUserList();
+} catch (\Error $e) {
+    var_dump($e);
+    exit();
+}
+```
+
+我们还是按照之前的步骤，使用容器将错误处理类绑定到容器中，然后解析出来使用。使用singleton方法将Request和Response类绑定到容器中，类型是单例。这样我们管理服务模块、实现依赖注入这些问题全都交给容器来做就好了。我们想要什么样的服务，就向容器中添加，在需要使用的时候，就利用容器解析使用就可以了。lumen框架中的服务容器是全局的，不需要像例子中一样，手动注入到逻辑代码中使用。
