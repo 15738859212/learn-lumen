@@ -10,7 +10,7 @@
 * [开启门面](FACADES.md)
 * [错误处理](ERROR_HANDLER.md)
 * [服务注册](SERVICE_REGISTER.md)
-* [路由解析](ROUTE_PARSE.md)
+* [路由处理](ROUTE_PARSE.md)
 * [设计模式](part_designs/INDEX.md)
     * [单例模式](part_designs/SINGLETON.md)
     * [工厂模式](part_designs/FACTORY.md)
