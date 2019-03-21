@@ -128,7 +128,7 @@ public function dispatch($request = null)
 
 dispatch方法先调用parseIncomingRequest方法对请求进行解析，接下来使用try...catch...对用户的逻辑进行包装。这样用户实现逻辑部分产生的几乎所有错误或异常都可以被框架捕捉到。这里的catch分别使用了Exception、Throwable分别捕捉用户逻辑中产生的异常和错误。而Lumen框架本身也是一个无错的运行容器。
 
-#### 源码解析
+#### 三、源码解析
 
 Lumen容器本身的错误处理是在全局对象$app构建时:
 
@@ -294,6 +294,6 @@ public function render($request, Exception $e)
 
 + Lumen框架本身是一个无错的容器，用户逻辑处理部分使用try...catch...包裹，基本可以捕获大多数异常和错误。
 
-+ set_error_handler 可以捕获 E_WARNING & E_NOTICE & E_DEPRECATED & E_USER_* 和 部分 E_STRICT 级的错误。set_error_handler 如果返回了 false 错误会递交给 PHP 标准错误处理。set_error_handler 不会终止程序执行。
++ set_error_handler可以捕获E_WARNING & E_NOTICE & E_DEPRECATED & E_USER_* 和 部分 E_STRICT 级的错误。set_error_handler 如果返回了 false 错误会递交给 PHP 标准错误处理。set_error_handler 不会终止程序执行。set_exception_handler 用户自定义异常捕获，捕获后程序依然会终止运行，但不会再将异常递交给 PHP 标准异常处理。
 
 + Lumen框架容器中使用registerErrorHandling设置了全局用户自定义错误、异常处理程序。用来处理没有被try...catch...捕捉到的错误，另外程序使用register_shutdown_function注册了回调函数，这是错误处理的最后一道关卡，用来捕捉用户自定义错误处理程序和try...catch...未能捕捉到的异常情况，例如：执行超时或内存溢出。
