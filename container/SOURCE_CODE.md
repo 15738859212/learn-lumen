@@ -51,7 +51,7 @@ public function bindIf($abstract, $concrete = null, $shared = false)
     }
 ```
 
-sington是bind方法的一种特例，shared=true表示为单例绑定:
+singleton是bind方法的一种特例，shared=true表示为单例绑定:
 
 ```
  public function singleton($abstract, $concrete = null)
